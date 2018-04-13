@@ -12,13 +12,11 @@ instance_index=$2
 scp_src=$3
 scp_dst=$4
 
-api_host=`cf target | grep API | awk '{print $3}'`
-ssh_host=`curl -s ${api_host}/v2/info | jq .app_ssh_endpoint | awk -F : '{print $1}' | sed 's/\"//g'`
+ssh_host=`cf curl /v2/info | jq .app_ssh_endpoint | awk -F : '{print $1}' | sed 's/\"//g'`
 app_id=`cf env ${app_name} | grep application_id | awk '{print $2}' | sed 's/\"//g' | sed 's/,//g'`
 ssh_code=`cf ssh-code`
 
 echo "settings ------"
-echo "api_host : ${api_host}"
 echo "ssh_host : ${ssh_host}"
 echo "app_name : ${app_name}"
 echo "app_id : ${app_id}"
